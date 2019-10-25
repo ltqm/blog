@@ -1,4 +1,5 @@
 module.exports = {
+  "base":'/BlogHtml/',
   "title": "涛声依旧",
   "description": "Don't ask. Asking is learning",
   "dest": "public",
