@@ -102,6 +102,38 @@ Vue.directive('preventReplaceClick', {
     }
 })
 
+/**
+ * @directive copy 复制内容
+ * @param {Element} el 绑定的元素
+ * @param {Number} binding 绑定的复制内容
+ * 使用方式 <el-button type="text" v-copy="123456">复制</el-button>
+ */
+Vue.directive('copy', {
+  bind (el, binding) {
+    // 注册事件
+    el.addEventListener('click', () => {
+      const value = binding.value
+      // 必须传值
+      if (!value) {
+        Message.error('请输入要复制问的文本')
+      }
+      // chrome version 66+ support
+      if (isSupportChromeVersion(66) && window.navigator.clipboard) {
+        //window.navigator.clipboard.writeText(value) https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard/writeText
+        window.navigator.clipboard.writeText(value).then(() => {
+          Message.success('复制成功啦, 赶快使用吧')
+        }).catch((error) => {
+          Message.error(error)
+        })
+      } else {
+        copyTarget.value = value
+        copyTarget.select()
+        document.execCommand('Copy')
+        Message.success('复制成功啦, 赶快使用吧')
+      }
+    })
+  }
+})
 ```
 
 ## 节流和防抖
